@@ -10,11 +10,12 @@ class DataType(Enum):
     temperature = auto()
 
 class PublisherData:
-    def __init__(self, type: DataType, id: str, sleepTime: int = 0):
+    def __init__(self, type: DataType, id: str, start: int, end: int):
         self.type = type
         self.id = id
         self.data = 0
-        self.sleepTime = sleepTime
+        self.start = start
+        self.end = end
         self.conn = stomp.Connection()
         self.connected = True
         self.connect()
@@ -30,10 +31,7 @@ class PublisherData:
         while self.connected:
             time.sleep(0.25)
             self.dataGen()
-            data = '{ "id": "' + self.id + '", "type": "' + self.type.name + '", "data": ' + str(self.data) + ' }' 
-            self.conn.send(body=data, destination='/topic/' + self.id)
+            self.conn.send(body=str(self.data), destination=('/topic/sensor' + str(self.id)))
+            
     def dataGen(self):
-        self.data = random.random()
-    
-# x = PublisherData(DataType.velocity, '1', 1)
-        
+        self.data = random.uniform(float(self.start), float(self.end))

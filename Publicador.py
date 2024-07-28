@@ -19,7 +19,6 @@ class PublisherData:
         self.connected = True
         self.connect()
         threading.Thread(target=self.send).start()
-        # self.send('{"id": "' + id + '", "type": "' + type.name + '"}')
 
     def connect(self): 
         self.conn.connect('admin', 'password', wait=True)

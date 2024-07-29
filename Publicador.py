@@ -2,12 +2,8 @@ import stomp
 import time
 import threading
 import random
-from enum import Enum, auto
-
-class DataType(Enum):
-    velocity = auto()
-    umidity = auto()
-    temperature = auto()
+import json
+from DataType import DataType
 
 class PublisherData:
     def __init__(self, type: DataType, id: str, start: int, end: int):
@@ -27,11 +23,17 @@ class PublisherData:
     def disconnect(self): 
         self.conn.disconnect()
         
-    def send(self):
+    def send(self): 
         while self.connected:
-            time.sleep(0.25)
+            time.sleep(5)
             self.dataGen()
-            self.conn.send(body=str(self.data), destination=('/topic/sensor' + str(self.id)))
+            alarm = False
+            if self.data < self.start or self.data > self.end:
+                alarm = True
+            else:
+                alarm = False
+            data = {"id": str(self.id), "data": str(self.data), "type": str(self.type), "alarm": str(alarm)}
+            self.conn.send(body=json.dumps(data), destination=('/topic/sensor' + str(self.id)))
             
     def dataGen(self):
-        self.data = random.uniform(float(self.start), float(self.end))
+        self.data = random.uniform(float(self.start * 2), float(self.end * 2))

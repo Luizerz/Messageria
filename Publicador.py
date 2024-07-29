@@ -3,10 +3,10 @@ import time
 import threading
 import random
 import json
-from DataType import DataType
+from UnityType import UnityType
 
 class PublisherData:
-    def __init__(self, type: DataType, id: str, start: int, end: int):
+    def __init__(self, type: UnityType, id: str, start: int, end: int):
         self.type = type
         self.id = id
         self.data = 0

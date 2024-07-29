@@ -22,18 +22,21 @@ class PublisherData:
         
     def disconnect(self): 
         self.conn.disconnect()
+    
+    def numberGenerator(self):
+        self.data = random.uniform(float(self.start * 1.2), float(self.end * 1.2))
         
     def send(self): 
         while self.connected:
             time.sleep(1)
-            self.dataGen()
+            self.numberGenerator()
             alarm = False
             if self.data < self.start or self.data > self.end:
                 alarm = True
+                data = {"id": str(self.id), "data": str(self.data), "type": str(self.type), "alarm": str(alarm)}
+                self.conn.send(body=json.dumps(data), destination=('/topic/sensor' + str(self.id)))
             else:
                 alarm = False
-            data = {"id": str(self.id), "data": str(self.data), "type": str(self.type), "alarm": str(alarm)}
-            self.conn.send(body=json.dumps(data), destination=('/topic/sensor' + str(self.id)))
             
-    def dataGen(self):
-        self.data = random.uniform(float(self.start * 2), float(self.end * 2))
+            
+    

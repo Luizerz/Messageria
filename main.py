@@ -28,6 +28,10 @@ def main(page: ft.Page):
         content=ft.Text("Seu sensor foi criado com sucesso!"),
         action="Ok!",
     )
+    page.window.width = 800
+    page.window.height = 350
+    page.window.resizable = False
+
 
     input_text = ft.TextField( label="ID", hint_text="Digite o ID do sensor", on_change=validade)
     submit_button = ft.ElevatedButton(text="Criar sensor", on_click=buttonClick)
@@ -52,10 +56,15 @@ def main(page: ft.Page):
             ft.dropdown.Option(DataType.temperature.value, text=DataType.temperature.name),
             ],
         )
+    range_slider_label = ft.Text((str(range_slider.start_value) + " até " + str(range_slider.end_value)))
+    def slider_label_change(e):
+        range_slider_label.value = str(int(range_slider.start_value)) + " até " + str(int(range_slider.end_value))
+        page.update()
+    range_slider.on_change = slider_label_change
     
     submit_button.disabled = True
     input_text.on_change = validade
     drop_down.on_change = validade
     
-    page.add(ft.Row([input_text, drop_down], alignment="Center"), ft.Row([range_slider, submit_button], alignment="Center"))
+    page.add(ft.Row([input_text, drop_down], alignment="Center"), ft.Row([range_slider, range_slider_label, submit_button], alignment="Center"))
 ft.app(main)

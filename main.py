@@ -31,6 +31,9 @@ def main(page: ft.Page):
     page.window.width = 800
     page.window.height = 350
     page.window.resizable = False
+    page.vertical_alignment = "CENTER"
+    page.horizontal_alignment = "CENTER"
+    page.theme = ft.Theme(color_scheme_seed=ft.colors.PURPLE_ACCENT_700)
 
 
     input_text = ft.TextField( label="ID", hint_text="Digite o ID do sensor", on_change=validade)
@@ -42,18 +45,15 @@ def main(page: ft.Page):
         start_value=0,
         divisions=200,
         end_value=100,
-        inactive_color=ft.colors.GREEN_300,
-        active_color=ft.colors.GREEN_700,
-        overlay_color=ft.colors.GREEN_100,
         label='{value}',
-        width=350
+        width=350,
     )
     drop_down = ft.Dropdown(
         label="Tipo de dado",
         options=[
-            ft.dropdown.Option(DataType.velocity.value, text=DataType.velocity.name),
-            ft.dropdown.Option(DataType.umidity.value, text=DataType.umidity.name),
-            ft.dropdown.Option(DataType.temperature.value, text=DataType.temperature.name),
+            ft.dropdown.Option(DataType.velocity.value, text=DataType.velocity.value),
+            ft.dropdown.Option(DataType.umidity.value, text=DataType.umidity.value),
+            ft.dropdown.Option(DataType.temperature.value, text=DataType.temperature.value),
             ],
         )
     range_slider_label = ft.Text((str(range_slider.start_value) + " até " + str(range_slider.end_value)))

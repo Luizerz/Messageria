@@ -25,7 +25,7 @@ class PublisherData:
         
     def send(self): 
         while self.connected:
-            time.sleep(5)
+            time.sleep(1)
             self.dataGen()
             alarm = False
             if self.data < self.start or self.data > self.end:
